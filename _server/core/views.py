@@ -27,8 +27,6 @@ def index(req):
         }
         
         return render(req, "core/index.html", context)
-    
-
 #--------------------
 # Logs Page
 #--------------------

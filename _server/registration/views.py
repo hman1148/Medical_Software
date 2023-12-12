@@ -14,19 +14,25 @@ def sign_up(req):
             last_name=req.POST.get("last_name")
         )
         login(req, user)
-        return redirect("/")
+        print("here")
+        return redirect("/central")
     else:
+        print("else")
         return render(req, "registration/sign_up.html")
 
 def sign_in(req):
     if req.method == "POST":
         user = authenticate(req, username=req.POST.get("email"), password=req.POST.get("password"))
+        print(user)
         if user is not None:
             login(req, user)
-            return redirect("/")
+            print("here")
+            return redirect("/central")
 
+        print("not in user if")
         return render(req, "registration/sign_in.html")
     else:
+        print("else")
         return render(req, "registration/sign_in.html")
 
 def logout_view(request):

@@ -3,19 +3,18 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import 'vite/modulepreload-polyfill'
 import {createHashRouter, RouterProvider} from "react-router-dom";
-import Signup from "./Signup.jsx"
-import Login from "./Login.jsx"
 import Central from "./Central.jsx";
+import CreatePatientPage from './CreatePatientPage.jsx';
 
 const router =  createHashRouter([
      {
-      path: "/",
+      path: "/central",
       element: <Central />,
      }, 
-    //  {
-    //   path: '/create_patient',
-    //   element: <CreatePatientPage />
-    //  },
+     {
+      path: '/create_patient_page',
+      element: <CreatePatientPage />
+     },
     //  {
     //   path: "/edit_patient",
     //   element: <EditPatient />,
