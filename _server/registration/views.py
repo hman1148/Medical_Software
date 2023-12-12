@@ -6,16 +6,20 @@ from django.http import JsonResponse
 # Create your views here.
 def sign_up(req):
     if req.method == "POST":
-        user = User.objects.create_user(
-            username=req.POST.get("email"),
-            password=req.POST.get("password"),
-            email=req.POST.get("email"),
-            first_name=req.POST.get("first_name"),
-            last_name=req.POST.get("last_name")
-        )
-        login(req, user)
-        print("here")
-        return redirect("/central")
+        
+        try:
+            user = User.objects.create_user(
+                username=req.POST.get("email"),
+                password=req.POST.get("password"),
+                email=req.POST.get("email"),
+                first_name=req.POST.get("first_name"),
+                last_name=req.POST.get("last_name")
+            )
+            login(req, user)
+            return redirect("/central")
+        
+        except: 
+            return render("<h1>Username already exists</h1>")
     else:
         print("else")
         return render(req, "registration/sign_up.html")

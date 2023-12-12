@@ -3,7 +3,8 @@ from . import views
 from registration import views as coreviews
 
 urlpatterns = [
-    path('', view=coreviews.sign_in, name="index"),
+    path('', view=coreviews.sign_in, name="register"),
+    path("central", view=views.index, name="index"),
     path('create_patient', view=views.add_patient, name="create_patient"),
     path('edit_patient/<int:id>', view=views.edit_patient, name='edit_patient'),
     path('delete_patient/<int:id>', view=views.delete_patient, name='delete_patient'),
