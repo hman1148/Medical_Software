@@ -89,17 +89,18 @@ def delete_patient(req: HttpRequest, id):
     except:
         return JsonResponse({"message": "Couldn't find Patient"})
 
-@login_required #possbily move this to a ReactRouter
-def get_patient(req: HttpRequest):
-    # exmaple code from lecture
-    notes = req.user.note_set.all()
-    notes_dict = [model_to_dict(note) for note in notes] # fancy code that joseph pulled on us in class. Basically, this is a map function from js
-    
-
 @login_required
-# Get all users
+def get_patient(req: HttpRequest, id):
+    try:
+        patient = Patient.objects.get(id=id)
+        patient_data = model_to_dict(patient)
+        return JsonResponse({"patient": patient_data})
+    except Exception:
+        return JsonResponse({"message": "Couldn't find patient"})
+    
+@login_required
 def all_patients(req: HttpRequest):
-    all_patients = Patient.objects.get()
+    all_patients = Patient.objects.all()
     patient_view_data = [model_to_dict(patient, fields=['id', 'name', 'address', 'email']) for patient in all_patients]
         
     return JsonResponse({'patients': patient_view_data})

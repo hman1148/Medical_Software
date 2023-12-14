@@ -8,21 +8,21 @@ import CreatePatientPage from './CreatePatientPage.jsx';
 
 const router =  createHashRouter([
      {
-      path: "/central",
+      path: "/",
       element: <Central />,
      }, 
      {
-      path: '/create_patient_page',
+      path: '/central/create_patient_page',
       element: <CreatePatientPage />
      },
-    //  {
-    //   path: "/edit_patient",
-    //   element: <EditPatient />,
-    //  }, 
-    //  {
-    //   path: "/logs_page",
-    //   element: <LogsPage />
-    //  }
+     {
+      path: "/edit_patient/:id",
+      element: <EditPatient />,
+     }, 
+     {
+      path: "/patient/:id",
+      element: <Patient />
+     }
 ]);
 
 

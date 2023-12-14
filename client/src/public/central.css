@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.button {
+    /* Add any additional styling for the button */
+}
+
+.tableContainer {
+    width: 80%;
+    margin-top: 20px;
+}
