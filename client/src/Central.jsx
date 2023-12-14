@@ -1,7 +1,6 @@
 import { useState, createPortal, useEffect } from "react"
 import {TableContainer, Paper, TableHead, TableCell, TableBody, TableRow, Button, Table, Container} from "@mui/material";
 import { Link } from "react-router-dom";
-import makeRequest from "./Utils/make_request";
 import "./public/central.css";
 
 let Central = () => {
@@ -9,9 +8,23 @@ let Central = () => {
 
     useEffect(() => {
         const fetchPatients = async () => {
-           const data = await makeRequest("/all_patients", "get");
-            console.log(data);
-            setPatients(data);
+                try {
+                    const response = await fetch(`/all_patients`);
+                    
+                    if (!Response.ok) {
+                        throw new Error("Network response was bad");
+                    }
+                    const data = await response.json();
+                    console.log(data); // this might be wrong 
+
+                    if (data.patients) {
+                        setPatients(data.patient);
+                    } else {
+                        throw new Error("Patient not found");
+                    }
+                } catch (error) {
+                    console.log(error.message);
+                }
         }
         fetchPatients();
 

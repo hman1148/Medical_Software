@@ -1,9 +1,8 @@
 import { Button, Stack, TextField } from "@mui/material";
 import React, { useState, createPortal, useEffect } from "react"
-import makeRequest from "./Utils/make_request";
 import {toast, ToastContainer} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
-import { parseCookie } from "./Utils/parseCookie";
+import cookie from "cookie";
 
 let CreatePatientPage = () => {
 
@@ -33,21 +32,22 @@ let CreatePatientPage = () => {
             costOfReimbursement: costOfReimbursement
         };
         try {
-        const response = await fetch("/create_patient", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-CSRFToken": parseCookie()
-            },
-            body: JSON.stringify(requestBody),
-            credentials: 'include'
+            const response = await fetch("/create_patient", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRFToken": cookie.parse(document.cookie).csrftoken
+                },
+                body: JSON.stringify(requestBody),
+                credentials: 'include'
         });
 
         if (!response.ok) {
             throw new Error(`HTTP Error. Response: ${response.status}`);
         }
         let responseData = await response.json();
+        console.log(responseData);
 
         if (responseData.message === "success") {
             toast.success("Added Patient!")

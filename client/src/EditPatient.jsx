@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import cookie from "cookie";
 
 let EditPatient = () => {
 
@@ -57,7 +57,7 @@ let EditPatient = () => {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "X-CSRFToken": parseCookie()
+                "X-CSRFToken": cookie.parse(document.cookie).csrftoken
             },
             body: JSON.stringify(requestBody),
             credentials: 'include'
