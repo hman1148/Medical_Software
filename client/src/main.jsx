@@ -5,6 +5,8 @@ import 'vite/modulepreload-polyfill'
 import {createHashRouter, RouterProvider} from "react-router-dom";
 import Central from "./Central.jsx";
 import CreatePatientPage from './CreatePatientPage.jsx';
+import Patient from './Patient.jsx';
+import EditPatient from './EditPatient.jsx';
 
 const router =  createHashRouter([
      {

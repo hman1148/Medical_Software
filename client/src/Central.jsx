@@ -9,8 +9,7 @@ let Central = () => {
     const [patientData, setPatientData] = useState([]);
 
     useEffect(() => {
-        const fetchPatients = async (e) => {
-            e.preventDefault;
+        const fetchPatients = async () => {
            const data = await makeRequest("/all_patients", "get");
             console.log(data);
             setPatients(data);
