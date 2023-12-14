@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import {toast, ToastContainer} from "react-toastify"
 import cookie from "cookie";
-let Nav = () => {
 
+
+let Nav = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -72,7 +73,7 @@ let Nav = () => {
       <AppBar position="static" style={{borderRadius: '15px'}}>
         <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {user ? user.first_name: ""}
+            {user ? user.first_name : ""}
           </Typography>
           <Button color="inherit" onClick={logout}>Logout</Button>
         </Toolbar>
@@ -82,4 +83,4 @@ let Nav = () => {
     )
 
 }
-export default Nav;
+export default Nav; 

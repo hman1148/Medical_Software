@@ -62,6 +62,10 @@ def add_patient(req: HttpRequest):
     patient.save()
     return JsonResponse({"message": "success"})
 
+#----------------
+#Edit patient page
+#---------------
+
 @login_required
 def edit_patient(req: HttpRequest, id):
     try:
