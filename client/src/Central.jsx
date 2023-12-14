@@ -6,7 +6,6 @@ import "./public/central.css";
 
 let Central = () => {
     const [patients, setPatients] = useState([]);
-    const [patientData, setPatientData] = useState([]);
 
     useEffect(() => {
         const fetchPatients = async () => {
