@@ -54,8 +54,8 @@ let Central = () => {
                             <TableCell>{patient.email}</TableCell>
                             <TableCell>{patient.address}</TableCell>
                             <TableCell>
-                                <Button>Edit Patient</Button>
-                                <Link to={`/delete_patient/${patient.id}`}><Button>Delete Patient</Button></Link>
+                                <Link to={`/edit_patient/${patient.id}`}><Button style={{background: "#f0ad4e", color: "white"}}>Edit Patient</Button></Link>
+                                <Link to={`/delete_patient/${patient.id}`}><Button style={{background: "#d9534f", color: "white"}}>Delete Patient</Button></Link>
                             </TableCell>
                         </TableRow>
                         </Link>
