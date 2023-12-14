@@ -1,17 +1,21 @@
-import { useEffect } from "react";
-import { useParams } from "react-router"
-import {Card, CardContent, Typography, Grid} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router"
+import {Card, CardContent, Typography, Grid, Button} from "@mui/material";
 
 
 let Patient = () => {
     const [patient, setPatient] = useState(null);
 
     const params = useParams();
+    const navigate = useNavigate();
+
     let getPatient = async () => {
         try {
-            const response = await fetch(`/patient/${params.id}`);
+            const response = await fetch(`/patient/${params.id}`, {
+                credentials: 'include'
+            });
             
-            if (!Response.ok) {
+            if (!response.ok) {
                 throw new Error("Network response was bad");
             }
 
@@ -36,6 +40,7 @@ let Patient = () => {
     }
 
     return (
+        <div className="form-background">
         <Card sx={{ maxWidth: 600, margin: '20px auto' }}>
             <CardContent>
                 <Typography variant="h5" component="div">
@@ -116,7 +121,9 @@ let Patient = () => {
                     </Grid>
                 </Grid>
             </CardContent>
+            <Button style={{background: "#54B4D3", width: '60px', height: '40px', color: 'white'}} onClick={() => navigate(-1)}>Back</Button>
         </Card>
+        </div>
     )
 }
 

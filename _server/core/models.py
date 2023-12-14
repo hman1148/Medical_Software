@@ -2,21 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class Insurance(models.Model):
-    
-    primary_name = models.TextField()
-    secondary_name = models.TextField()
-    third_name = models.TextField()
-    
-
 class Patient(models.Model):
     
     name = models.CharField(max_length=100)
     address = models.TextField()
     birthday = models.DateTimeField()
     phone_number = models.CharField(max_length=10)
-    primary_insurance = models.ForeignKey(Insurance, on_delete=models.CASCADE, related_name='primary_insurance_patients')
-    secondary_insurance = models.ForeignKey(Insurance, on_delete=models.CASCADE, related_name='secondary_insurance_patients')
+    primary_insurance = models.TextField()
+    secondary_insurance = models.TextField()
     date_of_fitting = models.DateTimeField()
     warranty_expiration = models.DateTimeField()
     cost_of_reimbursement = models.IntegerField()

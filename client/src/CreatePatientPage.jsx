@@ -3,9 +3,10 @@ import React, { useState, createPortal, useEffect } from "react"
 import {toast, ToastContainer} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 import cookie from "cookie";
+import { useNavigate } from "react-router";
 
 let CreatePatientPage = () => {
-
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [birthday, setBirthday] = useState('');
@@ -24,16 +25,24 @@ let CreatePatientPage = () => {
             name,
             address,
             birthday,
-            phoneNumber: phoneNumber,
-            primaryInsurance: primaryInsurance,
-            secondaryInsurance: secondaryInsurance,
-            dateOfFitting: dateOfFitting,
-            warrantyExpiration: warrantyExpiration,
-            costOfReimbursement: costOfReimbursement
-        };
+            phone_number: phoneNumber,
+            primary_insurance: primaryInsurance,
+            secondary_insurance: secondaryInsurance,
+            date_of_fitting: dateOfFitting,
+            warranty_expiration: warrantyExpiration,
+            cost_of_reimbursement: costOfReimbursement
+        }
+        
         try {
+            for (let key in requestBody) {
+                if (requestBody[key] == '') {
+                    toast.error(`Didn't add ${key}`);
+                    break;
+                }
+            }
+    
             const response = await fetch("/create_patient", {
-                method: "POST",
+                method: "post",
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
@@ -44,13 +53,14 @@ let CreatePatientPage = () => {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP Error. Response: ${response.status}`);
+            throw new Error(`HTTP Error. Response: ${response.status}`); // modify this for the future
         }
         let responseData = await response.json();
-        console.log(responseData);
 
         if (responseData.message === "success") {
-            toast.success("Added Patient!")
+            toast.success("Added Patient!");
+            setTimeout(() => navigate(-1), 3000);
+            
         } else {
             toast.error("Failed to Add Patient")
         }
@@ -62,8 +72,10 @@ let CreatePatientPage = () => {
 
     return (
         <React.Fragment>
+
         <ToastContainer position="top-right" autoClose={2000} style={""}/>
-        <h2>Add a new Patient</h2>
+
+        <div className="form-background">
         <form 
         style={{
             display: 'flex',
@@ -74,9 +86,12 @@ let CreatePatientPage = () => {
             width: '100%'
         }}
         onSubmit={handleSubmit}>
+                    <h2>Add a new Patient</h2>
+
             <Stack spacing={2} direction="column" sx={{ marginBottom: 4 }}>
                 <Stack spacing={2} direction="row">
                     <TextField
+                        className="textfield-size"
                         variant="outlined"
                         name="name"
                         color="secondary"
@@ -86,6 +101,7 @@ let CreatePatientPage = () => {
                         inputProps={{ maxLength: 100 }}
                     />
                     <TextField
+                        className="textfield-size"
                         label="Address"
                         name="address"
                         variant="outlined"
@@ -97,6 +113,7 @@ let CreatePatientPage = () => {
 
                 <Stack spacing={2} direction="row">
                     <TextField
+                        className="textfield-size"
                         label="Phone Number"
                         name="phone_number"
                         variant="outlined"
@@ -105,6 +122,7 @@ let CreatePatientPage = () => {
                         inputProps={{ maxLength: 10 }}
                     />
                     <TextField
+                        className="textfield-size"
                         label="Birthday"
                         name="birthday"
                         type="datetime-local"
@@ -117,6 +135,7 @@ let CreatePatientPage = () => {
 
                 <Stack spacing={2} direction="row">
                     <TextField
+                        className="textfield-size"
                         label="Primary Insurance"
                         name="primary_insurance"
                         variant="outlined"
@@ -133,6 +152,7 @@ let CreatePatientPage = () => {
                 </Stack>
                 <Stack spacing={2} direction="row">
                     <TextField
+                        className="textfield-size"
                         label="Date of Fitting"
                         name="date_of_fitting"
                         type="datetime-local"
@@ -142,6 +162,7 @@ let CreatePatientPage = () => {
                         InputLabelProps={{ shrink: true }}
                     />
                     <TextField
+                        className="textfield-size"
                         label="Warranty Expiration"
                         name="warranty_expiration"
                         type="datetime-local"
@@ -154,6 +175,7 @@ let CreatePatientPage = () => {
 
                 <Stack spacing={2} direction="row">
                     <TextField
+                        className="textfield-size"
                         label="Cost of Reimbursement"
                         name="cost_of_reimbursement"
                         type="number"
@@ -166,8 +188,10 @@ let CreatePatientPage = () => {
                 <Button type="submit" variant="contained" color="primary">
                     Submit
                 </Button>
+                <Button style={{background: "#54B4D3", width: '60px', height: '40px', color: 'white'}} onClick={() => navigate(-1)}>Back</Button>
             </Stack>
         </form>
+        </div>
     </React.Fragment>
     )
 }

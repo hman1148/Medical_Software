@@ -1,3 +1,22 @@
+#root {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.form-background {
+    background-color: whitesmoke;
+    width: 600px;
+    display: flex;
+    justify-content: center;
+    border-radius: 15px;
+    height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.textfield-size {
+    width: 50%;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -5,11 +24,37 @@
     margin-top: 50px;
 }
 
-.button {
-    /* Add any additional styling for the button */
+.button-container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+
+.button-size {
+    width: 80px;
+    height: 50px;
+    margin: 50px;
+    display: inline-block;
+}
+
+.row-size {
+    width: 450px;
+    height: 150px;
 }
 
 .tableContainer {
-    width: 80%;
+    width: 450px;
     margin-top: 20px;
 }
+.nav {
+    position: fixed;
+    top: 0;
+    width: 90%;
+    z-index: 1000;
+}
+
+.main-content {
+    padding-top: 60px;
+}
+

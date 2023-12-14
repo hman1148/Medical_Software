@@ -10,5 +10,7 @@ urlpatterns = [
     path('edit_patient/<int:id>', view=views.edit_patient, name='edit_patient'),
     path('delete_patient/<int:id>', view=views.delete_patient, name='delete_patient'),
     path('view_logs',view=views.logs, name='logs'),
-    path('all_patients', view=views.all_patients, name="all_patients")
+    path('all_patients', view=views.all_patients, name="all_patients"),
+    path('user', view=views.get_current_user, name="user"),
+    path('logout', view=coreviews.logout_view, name="logout")
 ]

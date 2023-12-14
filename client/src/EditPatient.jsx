@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import { Button, Stack, TextField } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import cookie from "cookie";
+
 
 let EditPatient = () => {
 
@@ -19,15 +21,20 @@ let EditPatient = () => {
     const [costOfReimbursement, setConstOfReimbursement] = useState('');
 
     const params = useParams();
+    const navigate = useNavigate();
+
     let getPatient = async () => {
         try {
-            const response = await fetch(`/patient/${params.id}`);
+            const response = await fetch(`/patient/${params.id}`, {
+                credentials: 'include'
+            });
             
-            if (!Response.ok) {
+            if (!response.ok) {
                 throw new Error("Network response was bad");
             }
 
             const data = await response.json();
+            console.log(data);
             if (data.patient) {
                 setCurrentPatient(data.patient);
             } else {
@@ -69,9 +76,9 @@ let EditPatient = () => {
         let responseData = await response.json();
 
         if (responseData.message === "success") {
-            toast.success("Added Patient!")
+            toast.success("Edited Patient!")
         } else {
-            toast.error("Failed to Add Patient")
+            toast.error("Failed to Edit Patient")
         }
     } catch (error) {
         console.log(error);
@@ -79,18 +86,18 @@ let EditPatient = () => {
     }
     }
 
-
     useEffect(() => {
         getPatient();
     }, [params.id]);
 
-    if (!patient) {
+    if (!currentPatient) {
         return <h1>Loading Patient</h1> // add loader here 
     }
 
-    <React.Fragment>
+    return (
+     <>
     <ToastContainer position="top-right" autoClose={2000} style={""}/>
-    <h2>Add a new Patient</h2>
+    <div className="form-background">
     <form 
     style={{
         display: 'flex',
@@ -101,9 +108,12 @@ let EditPatient = () => {
         width: '100%'
     }}
     onSubmit={handleSubmit}>
+            <h2>Edit {currentPatient.name}'s info</h2>
+            
         <Stack spacing={2} direction="column" sx={{ marginBottom: 4 }}>
             <Stack spacing={2} direction="row">
                 <TextField
+                    className="textfield-size"
                     variant="outlined"
                     name="name"
                     color="secondary"
@@ -113,6 +123,7 @@ let EditPatient = () => {
                     inputProps={{ maxLength: 100 }}
                 />
                 <TextField
+                className="textfield-size"
                     label="Address"
                     name="address"
                     variant="outlined"
@@ -124,6 +135,7 @@ let EditPatient = () => {
 
             <Stack spacing={2} direction="row">
                 <TextField
+                className="textfield-size"
                     label="Phone Number"
                     name="phone_number"
                     variant="outlined"
@@ -132,6 +144,7 @@ let EditPatient = () => {
                     inputProps={{ maxLength: 10 }}
                 />
                 <TextField
+                className="textfield-size"
                     label="Birthday"
                     name="birthday"
                     type="datetime-local"
@@ -144,36 +157,40 @@ let EditPatient = () => {
 
             <Stack spacing={2} direction="row">
                 <TextField
+                className="textfield-size"
                     label="Primary Insurance"
                     name="primary_insurance"
                     variant="outlined"
-                    value={currentPatient.primaryInsurance}
+                    value={currentPatient.primary_insurance}
                     onChange={(e) => setPrimaryInsurance(e.target.value)}
                 />
                 <TextField
+                className="textfield-size"
                     label="Secondary Insurance"
                     name="secondary_insurance"
                     variant="outlined"
-                    value={currentPatient.secondaryInsurance}
+                    value={currentPatient.secondary_insurance}
                     onChange={(e) => setSecondaryInsurance(e.target.value)}
                 />
             </Stack>
             <Stack spacing={2} direction="row">
                 <TextField
+                className="textfield-size"
                     label="Date of Fitting"
                     name="date_of_fitting"
                     type="datetime-local"
                     variant="outlined"
-                    value={currentPatient.dateOfFitting}
+                    value={currentPatient.date_of_fitting}
                     onChange={(e) => setDateOfFitting(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                 />
                 <TextField
+                className="textfield-size"
                     label="Warranty Expiration"
                     name="warranty_expiration"
                     type="datetime-local"
                     variant="outlined"
-                    value={currentPatient.warrantyExpiration}
+                    value={currentPatient.warranty_expiration}
                     onChange={(e) => setWarrantyExpiration(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                 />
@@ -181,11 +198,12 @@ let EditPatient = () => {
 
             <Stack spacing={2} direction="row">
                 <TextField
+                className="textfield-size"
                     label="Cost of Reimbursement"
                     name="cost_of_reimbursement"
                     type="number"
                     variant="outlined"
-                    value={currentPatient.costOfReimbursement}
+                    value={currentPatient.cost_of_reimbursement}
                     onChange={(e) => setConstOfReimbursement(e.target.value)}
                 />
             </Stack>
@@ -193,12 +211,12 @@ let EditPatient = () => {
             <Button type="submit" variant="contained" color="primary">
                 Submit
             </Button>
+            <Button style={{background: "#54B4D3", width: '60px', height: '40px', color: 'white'}} onClick={() => navigate(-1)}>Back</Button>
         </Stack>
     </form>
-</React.Fragment>
-
-
-
+    </div>
+    </>
+);
 }
 
 export default EditPatient;

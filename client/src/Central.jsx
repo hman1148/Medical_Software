@@ -1,24 +1,58 @@
-import { useState, createPortal, useEffect } from "react"
+import { useState, useEffect } from "react"
 import {TableContainer, Paper, TableHead, TableCell, TableBody, TableRow, Button, Table, Container} from "@mui/material";
 import { Link } from "react-router-dom";
 import "./public/central.css";
+import {toast, ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Nav from "./Nav";
+
 
 let Central = () => {
     const [patients, setPatients] = useState([]);
+    const [isDeleted, setIsDeleted] = useState(false);
+
+    // make a delete function to call fetch then put the functon in the onclick listener for the delete button
+    let deletePatient = async (id) => {
+        try {
+            setIsDeleted(false);
+            const response = await fetch(`/delete_patient/${id}`, {
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                toast.error("Error from server " + response.status);
+                throw new Error("Network Error");
+            }
+            const deletedData = await response.json();
+            console.log(deletedData);
+
+            if (deletedData.message == "success") {
+                setIsDeleted(true);
+                toast.success("Patient was successfully deleted")
+            } else {
+                toast.error("Patient wasn't deleted")
+            }
+
+        } catch (error) {
+            toast.error(`Error: ${error}`)
+        }
+    }
 
     useEffect(() => {
         const fetchPatients = async () => {
                 try {
-                    const response = await fetch(`/all_patients`);
+                    const response = await fetch(`/all_patients`, {
+                        credentials: 'include'
+                    });
                     
-                    if (!Response.ok) {
-                        throw new Error("Network response was bad");
+                    if (!response.ok) {
+                        throw new Error("Network Error");
                     }
                     const data = await response.json();
-                    console.log(data); // this might be wrong 
+                    console.log(data); 
 
                     if (data.patients) {
-                        setPatients(data.patient);
+                        setPatients(data.patients);
                     } else {
                         throw new Error("Patient not found");
                     }
@@ -27,13 +61,17 @@ let Central = () => {
                 }
         }
         fetchPatients();
-
-    }, [])
+    }, [isDeleted])
 
     return (
         <>
-        <div className="container">
-        <Container maxWidth="sm">
+        <ToastContainer position="top-right" autoClose={2000} style={""}/>
+        <div className="nav">
+            <Nav  />
+        </div>
+
+        <div className="main-content">
+        <Container maxWidth="md">
         <Button className="button"><Link to="/central/create_patient_page">Add Patient</Link></Button>
         <TableContainer component={Paper} className="tableContainer">
             <Table>
@@ -47,18 +85,20 @@ let Central = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-
                     {patients.length > 0 ? (patients.map((patient) => (
-                        <Link to={`/edit_patient/${patient.id}`}><TableRow key={patient.id}>
+                        <TableRow className="row-size" key={patient.id}>
+                            <TableCell>{patient.id}</TableCell>
                             <TableCell>{patient.name}</TableCell>
                             <TableCell>{patient.email}</TableCell>
                             <TableCell>{patient.address}</TableCell>
                             <TableCell>
-                                <Link to={`/edit_patient/${patient.id}`}><Button style={{background: "#f0ad4e", color: "white"}}>Edit Patient</Button></Link>
-                                <Link to={`/delete_patient/${patient.id}`}><Button style={{background: "#d9534f", color: "white"}}>Delete Patient</Button></Link>
+                                <div className="button-container">
+                                    <Link to={`/patient/${patient.id}`}><Button className="button-size" style={{background: "#14A44D", color: "white"}}>View Info</Button></Link>
+                                    <Link to={`/edit_patient/${patient.id}`}><Button className="button-size" style={{background: "#f0ad4e", color: "white"}}>Edit Patient</Button></Link>
+                                    <Button onClick={() => deletePatient(patient.id)} className="button-size" style={{background: "#d9534f", color: "white"}}>Delete Patient</Button>
+                                </div>
                             </TableCell>
                         </TableRow>
-                        </Link>
                     ))): (
                     <TableRow>
                         <TableCell colSpan={4}>No patients available</TableCell>

@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.conf  import settings
 import json
 import os
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.forms import model_to_dict
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest
 from .models import Log, Patient
+
 
 # Load manifest when server launches
 MANIFEST = {}
@@ -49,21 +50,24 @@ def add_patient(req: HttpRequest):
             primary_insurance = body["primary_insurance"],
             secondary_insurance = body["secondary_insurance"],
             date_of_fitting = body["date_of_fitting"],
-            warrenty_expiration = body["warrenty_expiration"],
+            warranty_expiration = body["warranty_expiration"],
             cost_of_reimbursement = body["cost_of_reimbursement"]
         )
-    except:
-        return JsonResponse({'message': "Didn't enter in the correct data"})
+        
+        
+    except Exception as e:
+        print(e)
+        return JsonResponse({'message': f"Didn't enter in the correct data {e}"})
     
     patient.save()
-    return JsonResponse({"success": True})
+    return JsonResponse({"message": "success"})
 
 @login_required
 def edit_patient(req: HttpRequest, id):
     try:
         patient = Patient.objects.get(id=id)
-    except Exception:
-        return JsonResponse({"message": "Couldn't find that patient in our system."})
+    except Exception as e:
+        return JsonResponse({"message": f"Couldn't find that patient in our system. {e}"})
 
     patient.name = req.body["name"],
     patient.address = req.body["address"]
@@ -85,9 +89,9 @@ def delete_patient(req: HttpRequest, id):
     try:
         deleted_user = Patient.objects.get(id=id)
         deleted_user.delete()
-        return JsonResponse({"message": "Deleted Patient Successfully"})
-    except:
-        return JsonResponse({"message": "Couldn't find Patient"})
+        return JsonResponse({"message": "success"})
+    except Exception as e:
+        return JsonResponse({"message": f"Couldn't find Patient {e}"})
 
 @login_required
 def get_patient(req: HttpRequest, id):
@@ -95,8 +99,8 @@ def get_patient(req: HttpRequest, id):
         patient = Patient.objects.get(id=id)
         patient_data = model_to_dict(patient)
         return JsonResponse({"patient": patient_data})
-    except Exception:
-        return JsonResponse({"message": "Couldn't find patient"})
+    except Exception as e:
+        return JsonResponse({"message": f"Couldn't find patient {e}"})
     
 @login_required
 def all_patients(req: HttpRequest):
@@ -105,16 +109,12 @@ def all_patients(req: HttpRequest):
         
     return JsonResponse({'patients': patient_view_data})
 
-# demo code 
-# def json_note_demo(req):
-    # body = json.loads(req.body)
+@login_required
+def get_current_user(req: HttpRequest):
+    current_user = req.user
     
-    # model = Model(
-    #     title = body["title"],
-    #     content = body["content"],
-    #     user = req.user
-    #     ) # temp code
-    
-    # return ({"note": model_to_dict(model)})
-
-# possbily create helper function to create logs per request made on the serve
+    if current_user.is_authenticated:
+        user_view_info = model_to_dict(current_user, fields=['username', 'email', 'first_name', 'last_name'])
+        return JsonResponse({"user": user_view_info})
+    else:
+        return JsonResponse({"user": "none"})
