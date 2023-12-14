@@ -36,7 +36,7 @@ let Patient = () => {
     }, [params.id]);
 
     if (!patient) {
-        return <h1>Loading Patient</h1> // add loader here 
+        return <span className="loader"></span> // add loader here 
     }
 
     return (
@@ -65,7 +65,15 @@ let Patient = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" color="text.secondary">
-                            Address
+                            Email
+                        </Typography>
+                        <Typography variant="body2">
+                            {patient.email}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="body1" color="text.secondary">
+                            Birthday
                         </Typography>
                         <Typography variant="body2">
                             {patient.birthday}
@@ -73,7 +81,7 @@ let Patient = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" color="text.secondary">
-                            Address
+                            Phone Number
                         </Typography>
                         <Typography variant="body2">
                             {patient.phone_number}
@@ -81,7 +89,7 @@ let Patient = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" color="text.secondary">
-                            Address
+                            Primary Insurance 
                         </Typography>
                         <Typography variant="body2">
                             {patient.primary_insurance}
@@ -89,7 +97,7 @@ let Patient = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" color="text.secondary">
-                            Address
+                            Secondary Insurance
                         </Typography>
                         <Typography variant="body2">
                             {patient.secondary_insurance}
@@ -97,7 +105,7 @@ let Patient = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" color="text.secondary">
-                            Address
+                            Date of Fitting
                         </Typography>
                         <Typography variant="body2">
                             {patient.date_of_fitting}
@@ -105,7 +113,7 @@ let Patient = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" color="text.secondary">
-                            Address
+                            Warranty Expiration
                         </Typography>
                         <Typography variant="body2">
                             {patient.warranty_expiration}
@@ -113,7 +121,7 @@ let Patient = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" color="text.secondary">
-                            Address
+                            Cost of Reimbursement
                         </Typography>
                         <Typography variant="body2">
                             {patient.cost_of_reimbursement}
@@ -121,7 +129,7 @@ let Patient = () => {
                     </Grid>
                 </Grid>
             </CardContent>
-            <Button style={{background: "#54B4D3", width: '60px', height: '40px', color: 'white'}} onClick={() => navigate(-1)}>Back</Button>
+            <Button style={{background: "#54B4D3", width: '60px', height: '40px', color: 'white', margin: "15px"}} onClick={() => navigate(-1)}>Back</Button>
         </Card>
         </div>
     )

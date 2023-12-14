@@ -55,7 +55,7 @@ let Nav = () => {
 
             if (data.success == true) {
                 toast.success("Successfully logged out!");
-                setTimeout(() => navigate("/sign_in"), 2000);
+                setTimeout(() => navigate("/"), 2000);
             } else {
                 toast.success("Couldn't logout")
             }

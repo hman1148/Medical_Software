@@ -12,5 +12,5 @@ urlpatterns = [
     path('view_logs',view=views.logs, name='logs'),
     path('all_patients', view=views.all_patients, name="all_patients"),
     path('user', view=views.get_current_user, name="user"),
-    path('logout', view=coreviews.logout_view, name="logout")
+    path('logout', view=coreviews.logout_view, name="logout"),
 ]

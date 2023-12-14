@@ -12,6 +12,7 @@ let EditPatient = () => {
 
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
+    const [email, setEmail] = useState('');
     const [birthday, setBirthday] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [primaryInsurance, setPrimaryInsurance] = useState('');
@@ -23,7 +24,7 @@ let EditPatient = () => {
     const params = useParams();
     const navigate = useNavigate();
 
-    let getPatient = async () => {
+    const getPatient = async () => {
         try {
             const response = await fetch(`/patient/${params.id}`, {
                 credentials: 'include'
@@ -36,6 +37,7 @@ let EditPatient = () => {
             const data = await response.json();
             console.log(data);
             if (data.patient) {
+                
                 setCurrentPatient(data.patient);
             } else {
                 throw new Error("Patient not found");
@@ -50,6 +52,7 @@ let EditPatient = () => {
         const requestBody = {
             name,
             address,
+            email: email,
             birthday,
             phoneNumber: phoneNumber,
             primaryInsurance: primaryInsurance,
@@ -84,14 +87,20 @@ let EditPatient = () => {
         console.log(error);
         toast.error(error.message);
     }
+}
+
+    const handleFormat = (oldFormat) => {
+        const date = new Date(oldFormat);
+        return date.toISOString().slice(0, 16);
     }
+
 
     useEffect(() => {
         getPatient();
     }, [params.id]);
 
     if (!currentPatient) {
-        return <h1>Loading Patient</h1> // add loader here 
+        return <span className="loader"></span> // add loader here 
     }
 
     return (
@@ -131,6 +140,15 @@ let EditPatient = () => {
                     onChange={(e) => setAddress(e.target.value)}
                     multiline
                 />
+                 <TextField
+                        className="textfield-size"
+                        label="Email"
+                        name="email"
+                        variant="outlined"
+                        value={currentPatient.email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        multiline
+                    />
             </Stack>
 
             <Stack spacing={2} direction="row">
@@ -149,7 +167,7 @@ let EditPatient = () => {
                     name="birthday"
                     type="datetime-local"
                     variant="outlined"
-                    value={currentPatient.birthday}
+                    value={handleFormat(currentPatient.birthday)}
                     onChange={(e) => setBirthday(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                 />
@@ -180,7 +198,7 @@ let EditPatient = () => {
                     name="date_of_fitting"
                     type="datetime-local"
                     variant="outlined"
-                    value={currentPatient.date_of_fitting}
+                    value={handleFormat(currentPatient.date_of_fitting)}
                     onChange={(e) => setDateOfFitting(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                 />
@@ -190,7 +208,7 @@ let EditPatient = () => {
                     name="warranty_expiration"
                     type="datetime-local"
                     variant="outlined"
-                    value={currentPatient.warranty_expiration}
+                    value={handleFormat(currentPatient.warranty_expiration)}
                     onChange={(e) => setWarrantyExpiration(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                 />

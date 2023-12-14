@@ -9,6 +9,7 @@ let CreatePatientPage = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
+    const [email, setEmail] = useState('');
     const [birthday, setBirthday] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [primaryInsurance, setPrimaryInsurance] = useState('');
@@ -18,12 +19,12 @@ let CreatePatientPage = () => {
     const [costOfReimbursement, setConstOfReimbursement] = useState('');
     
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const requestBody = {
             name,
             address,
+            email: email,
             birthday,
             phone_number: phoneNumber,
             primary_insurance: primaryInsurance,
@@ -109,6 +110,15 @@ let CreatePatientPage = () => {
                         onChange={(e) => setAddress(e.target.value)}
                         multiline
                     />
+                     <TextField
+                        className="textfield-size"
+                        label="Email"
+                        name="email"
+                        variant="outlined"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        multiline
+                    />
                 </Stack>
 
                 <Stack spacing={2} direction="row">
@@ -143,6 +153,7 @@ let CreatePatientPage = () => {
                         onChange={(e) => setPrimaryInsurance(e.target.value)}
                     />
                     <TextField
+                       className="textfield-size"
                         label="Secondary Insurance"
                         name="secondary_insurance"
                         variant="outlined"

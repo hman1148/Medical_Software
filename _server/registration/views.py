@@ -22,22 +22,17 @@ def sign_up(req):
         except: 
             return render("<h1>Username already exists</h1>")
     else:
-        print("else")
         return render(req, "registration/sign_up.html")
 
 def sign_in(req):
     if req.method == "POST":
         user = authenticate(req, username=req.POST.get("email"), password=req.POST.get("password"))
-        print(user)
         if user is not None:
             login(req, user)
-            print("here")
             return redirect("/central")
 
-        print("not in user if")
         return render(req, "registration/sign_in.html")
     else:
-        print("else")
         return render(req, "registration/sign_in.html")
 
 @require_POST

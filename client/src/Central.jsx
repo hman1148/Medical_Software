@@ -72,7 +72,7 @@ let Central = () => {
 
         <div className="main-content">
         <Container maxWidth="md">
-        <Button className="button"><Link to="/central/create_patient_page">Add Patient</Link></Button>
+        <Button className="button" style={{backgroundColor: "whitesmoke", border: "0.5px solid grey", boxShadow: ""}}><Link to="/central/create_patient_page">Add Patient</Link></Button>
         <TableContainer component={Paper} className="tableContainer">
             <Table>
                 <TableHead>

@@ -45,6 +45,7 @@ def add_patient(req: HttpRequest):
         patient = Patient(
             name = body["name"],
             address = body["address"],
+            email = body["email"],
             birthday = body["birthday"],
             phone_number = body["phone_number"],
             primary_insurance = body["primary_insurance"],
@@ -56,7 +57,6 @@ def add_patient(req: HttpRequest):
         
         
     except Exception as e:
-        print(e)
         return JsonResponse({'message': f"Didn't enter in the correct data {e}"})
     
     patient.save()
