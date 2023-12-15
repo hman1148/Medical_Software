@@ -35,7 +35,6 @@ let EditPatient = () => {
             }
 
             const data = await response.json();
-            console.log(data);
             if (data.patient) {
                 const patient = data.patient;
                 setName(patient.name);

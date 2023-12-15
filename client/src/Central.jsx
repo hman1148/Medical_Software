@@ -24,7 +24,6 @@ let Central = () => {
                 throw new Error("Network Error");
             }
             const deletedData = await response.json();
-            console.log(deletedData);
 
             if (deletedData.message == "success") {
                 setIsDeleted(true);
@@ -49,7 +48,6 @@ let Central = () => {
                         throw new Error("Network Error");
                     }
                     const data = await response.json();
-                    console.log(data); 
 
                     if (data.patients) {
                         setPatients(data.patients);
