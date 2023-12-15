@@ -16,7 +16,7 @@ let CreatePatientPage = () => {
     const [secondaryInsurance, setSecondaryInsurance] = useState('');
     const [dateOfFitting, setDateOfFitting] = useState('');
     const [warrantyExpiration, setWarrantyExpiration] = useState('');
-    const [costOfReimbursement, setConstOfReimbursement] = useState('');
+    const [costOfReimbursement, setCostOfReimbursement] = useState('');
     
 
     const handleSubmit = async (e) => {
@@ -192,7 +192,7 @@ let CreatePatientPage = () => {
                         type="number"
                         variant="outlined"
                         value={costOfReimbursement}
-                        onChange={(e) => setConstOfReimbursement(e.target.value)}
+                        onChange={(e) => setCostOfReimbursement(e.target.value)}
                     />
                 </Stack>
 

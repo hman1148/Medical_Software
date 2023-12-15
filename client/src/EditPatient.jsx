@@ -19,7 +19,7 @@ let EditPatient = () => {
     const [secondaryInsurance, setSecondaryInsurance] = useState('');
     const [dateOfFitting, setDateOfFitting] = useState('');
     const [warrantyExpiration, setWarrantyExpiration] = useState('');
-    const [costOfReimbursement, setConstOfReimbursement] = useState('');
+    const [costOfReimbursement, setCostOfReimbursement] = useState('');
 
     const params = useParams();
     const navigate = useNavigate();
@@ -37,8 +37,18 @@ let EditPatient = () => {
             const data = await response.json();
             console.log(data);
             if (data.patient) {
-                
-                setCurrentPatient(data.patient);
+                const patient = data.patient;
+                setName(patient.name);
+                setAddress(patient.address);
+                setEmail(patient.email);
+                setBirthday(patient.birthday);
+                setPhoneNumber(patient.phone_number);
+                setPrimaryInsurance(patient.primary_insurance);
+                setSecondaryInsurance(patient.secondary_insurance);
+                setDateOfFitting(patient.date_of_fitting);
+                setWarrantyExpiration(patient.warranty_expiration);
+                setCostOfReimbursement(patient.cost_of_reimbursement);
+                setCurrentPatient(patient);
             } else {
                 throw new Error("Patient not found");
             }
@@ -54,16 +64,16 @@ let EditPatient = () => {
             address,
             email: email,
             birthday,
-            phoneNumber: phoneNumber,
-            primaryInsurance: primaryInsurance,
-            secondaryInsurance: secondaryInsurance,
-            dateOfFitting: dateOfFitting,
-            warrantyExpiration: warrantyExpiration,
-            costOfReimbursement: costOfReimbursement
+            phone_number: phoneNumber,
+            primary_insurance: primaryInsurance,
+            secondary_insurance: secondaryInsurance,
+            date_of_fitting: dateOfFitting,
+            warranty_expiration: warrantyExpiration,
+            cost_of_reimbursement: costOfReimbursement
         };
         try {
-        const response = await fetch("/create_patient", {
-            method: "POST",
+        const response = await fetch(`/edit_patient/${params.id}`, {
+            method: "put",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -80,6 +90,7 @@ let EditPatient = () => {
 
         if (responseData.message === "success") {
             toast.success("Edited Patient!")
+            setTimeout(() => navigate(-1), 2000);
         } else {
             toast.error("Failed to Edit Patient")
         }
@@ -127,7 +138,7 @@ let EditPatient = () => {
                     name="name"
                     color="secondary"
                     label="Name"
-                    value={currentPatient.name}
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                     inputProps={{ maxLength: 100 }}
                 />
@@ -136,7 +147,7 @@ let EditPatient = () => {
                     label="Address"
                     name="address"
                     variant="outlined"
-                    value={currentPatient.address}
+                    value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     multiline
                 />
@@ -145,7 +156,7 @@ let EditPatient = () => {
                         label="Email"
                         name="email"
                         variant="outlined"
-                        value={currentPatient.email}
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         multiline
                     />
@@ -157,7 +168,7 @@ let EditPatient = () => {
                     label="Phone Number"
                     name="phone_number"
                     variant="outlined"
-                    value={currentPatient.phoneNumber}
+                    value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     inputProps={{ maxLength: 10 }}
                 />
@@ -167,7 +178,7 @@ let EditPatient = () => {
                     name="birthday"
                     type="datetime-local"
                     variant="outlined"
-                    value={handleFormat(currentPatient.birthday)}
+                    value={handleFormat(birthday)}
                     onChange={(e) => setBirthday(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                 />
@@ -179,7 +190,7 @@ let EditPatient = () => {
                     label="Primary Insurance"
                     name="primary_insurance"
                     variant="outlined"
-                    value={currentPatient.primary_insurance}
+                    value={primaryInsurance}
                     onChange={(e) => setPrimaryInsurance(e.target.value)}
                 />
                 <TextField
@@ -187,7 +198,7 @@ let EditPatient = () => {
                     label="Secondary Insurance"
                     name="secondary_insurance"
                     variant="outlined"
-                    value={currentPatient.secondary_insurance}
+                    value={secondaryInsurance}
                     onChange={(e) => setSecondaryInsurance(e.target.value)}
                 />
             </Stack>
@@ -198,7 +209,7 @@ let EditPatient = () => {
                     name="date_of_fitting"
                     type="datetime-local"
                     variant="outlined"
-                    value={handleFormat(currentPatient.date_of_fitting)}
+                    value={handleFormat(dateOfFitting)}
                     onChange={(e) => setDateOfFitting(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                 />
@@ -208,7 +219,7 @@ let EditPatient = () => {
                     name="warranty_expiration"
                     type="datetime-local"
                     variant="outlined"
-                    value={handleFormat(currentPatient.warranty_expiration)}
+                    value={handleFormat(warrantyExpiration)}
                     onChange={(e) => setWarrantyExpiration(e.target.value)}
                     InputLabelProps={{ shrink: true }}
                 />
@@ -221,8 +232,8 @@ let EditPatient = () => {
                     name="cost_of_reimbursement"
                     type="number"
                     variant="outlined"
-                    value={currentPatient.cost_of_reimbursement}
-                    onChange={(e) => setConstOfReimbursement(e.target.value)}
+                    value={costOfReimbursement}
+                    onChange={(e) => setCostOfReimbursement(e.target.value)}
                 />
             </Stack>
 

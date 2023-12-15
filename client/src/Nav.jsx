@@ -56,7 +56,7 @@ let Nav = () => {
 
             if (data.success == true) {
                 toast.success("Successfully logged out!");
-                setTimeout(() => navigate("/"), 2000);
+                setTimeout(() => window.location.href = "/" , 2000);
             } else {
                 toast.success("Couldn't logout")
             }

@@ -68,25 +68,28 @@ def add_patient(req: HttpRequest):
 
 @login_required
 def edit_patient(req: HttpRequest, id):
+    body = json.loads(req.body)
+    
     try:
         patient = Patient.objects.get(id=id)
+        
+        patient.name = body["name"]
+        patient.address = body["address"]
+        patient.birthday = body["birthday"]
+        patient.phone_number = body["phone_number"]
+        patient.primary_insurance = body["primary_insurance"]
+        patient.secondary_insurance = body["secondary_insurance"]
+        patient.date_of_fitting = body["date_of_fitting"]
+        patient.warrenty_expiration = body["warranty_expiration"]
+        patient.cost_of_reimbursement = body["cost_of_reimbursement"]
+        
+        patient.save()
+        return JsonResponse({"message": "success"})
+
     except Exception as e:
         return JsonResponse({"message": f"Couldn't find that patient in our system. {e}"})
 
-    patient.name = req.body["name"],
-    patient.address = req.body["address"]
-    patient.birthday = req.body["birthday"]
-    patient.phone_number = req.body["phone_number"]
-    patient.primary_insurance = req.body["primary_insurance"]
-    patient.secondary_insurance = req.body["secondary_insurance"]
-    patient.date_of_fitting = req.body["date_of_fitting"]
-    patient.warrenty_expiration = req.body["warrenty_expiration"]
-    patient.cost_of_reimbursement = req.body["cost_of_reimbursement"]
-    
-    patient.save()
-    return JsonResponse({"message": "Patient saved successfully"})
-
-
+   
 
 @login_required
 def delete_patient(req: HttpRequest, id):

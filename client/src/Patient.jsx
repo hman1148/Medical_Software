@@ -31,6 +31,13 @@ let Patient = () => {
         }
     };
 
+    const handleFormat = (oldFormat) => {
+        const date = new Date(oldFormat);
+        const options = {year: 'numeric', month: 'long', day: 'numeric'}
+        return date.toLocaleDateString('en-US', options);
+    }
+
+
     useEffect(() => {
         getPatient();
     }, [params.id]);
@@ -76,7 +83,7 @@ let Patient = () => {
                             Birthday
                         </Typography>
                         <Typography variant="body2">
-                            {patient.birthday}
+                            {handleFormat(patient.birthday)}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -108,7 +115,7 @@ let Patient = () => {
                             Date of Fitting
                         </Typography>
                         <Typography variant="body2">
-                            {patient.date_of_fitting}
+                            {handleFormat(patient.date_of_fitting)}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -116,7 +123,7 @@ let Patient = () => {
                             Warranty Expiration
                         </Typography>
                         <Typography variant="body2">
-                            {patient.warranty_expiration}
+                            {handleFormat(patient.warranty_expiration)}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
