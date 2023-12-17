@@ -1,6 +1,7 @@
 const {app, BrowserWindow, screen} = require("electron");
 const {exec} = require("child_process");
 const os = require("os");
+const path = require("path");
 // import {app, BrowserWindow, screen} from "electron";
 
 let mainWindow;
@@ -33,16 +34,17 @@ let startServer = () => {
        //windows 
         viteCommand = "";
         djangoCommand = "";
-        pathToFront = "";
-        pathToBack = "";
+
+        pathToFront = path.resolve(os.homedir(), "");
+        pathToBack = path.resolve(os.homedir(), "");
 
     } else {
         // Linux and MacOS
 
         viteCommand = "";
         djangoCommand = "";
-        pathToFront = "";
-        pathToBack = "";
+        pathToFront = path.resolve(os.homedir(), "");
+        pathToBack = path.resolve(os.homedir(), "");
     }
 
     // execute the front end script

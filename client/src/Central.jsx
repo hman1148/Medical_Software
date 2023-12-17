@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react"
-import {TableContainer, Paper, TableHead, TableCell, TableBody, TableRow, Button, Table, Container} from "@mui/material";
+import {TableContainer, Pagination, Paper, TableHead, TableCell, TableBody, TableRow, Button, Table, Container} from "@mui/material";
 import { Link } from "react-router-dom";
 import "./public/central.css";
 import {toast, ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Nav from "./Nav";
 
-
 let Central = () => {
     const [patients, setPatients] = useState([]);
     const [isDeleted, setIsDeleted] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [searchQuerry, setSearchQuery] = useState('');
+
 
     // make a delete function to call fetch then put the functon in the onclick listener for the delete button
     let deletePatient = async (id) => {
@@ -39,8 +42,11 @@ let Central = () => {
 
     useEffect(() => {
         const fetchPatients = async () => {
+                const searchParam = searchQuerry ? `search=${searchQuerry}` : ``;
+                const pageParam = `page=${currentPage}`;
+
                 try {
-                    const response = await fetch(`/all_patients`, {
+                    const response = await fetch(`/all_patients?${searchParam}&${pageParam}`, {
                         credentials: 'include'
                     });
                     
@@ -51,6 +57,7 @@ let Central = () => {
 
                     if (data.patients) {
                         setPatients(data.patients);
+                        setTotalPages(data.total_pages)
                     } else {
                         throw new Error("Patient not found");
                     }
@@ -59,7 +66,7 @@ let Central = () => {
                 }
         }
         fetchPatients();
-    }, [isDeleted])
+    }, [searchQuerry, currentPage, isDeleted])
 
     return (
         <>
@@ -70,7 +77,25 @@ let Central = () => {
 
         <div className="main-content">
         <Container maxWidth="md">
-        <Button className="button" style={{backgroundColor: "whitesmoke", border: "0.5px solid grey", boxShadow: ""}}><Link to="/central/create_patient_page">Add Patient</Link></Button>
+
+        <div className="button-container">
+            <Button 
+            className="button"
+             style={{backgroundColor: "whitesmoke", border: "0.5px solid grey", boxShadow: ""}}>
+                <Link to="/central/create_patient_page">Add Patient</Link>
+                </Button>
+            <input 
+            className="material-ui-search-bar 
+            " type="text"
+             value={searchQuerry} onChange={(e) => setSearchQuery(e.target.value)} 
+             placeholder="Search patients..." 
+             />
+            <Button 
+            className="button"
+             style={{backgroundColor: "whitesmoke", border: "0.5px solid grey", boxShadow: ""}}>
+                Logs</Button>
+        </div>
+
         <TableContainer component={Paper} className="tableContainer">
             <Table>
                 <TableHead>
@@ -106,6 +131,12 @@ let Central = () => {
                 </TableBody>
             </Table>
         </TableContainer>
+        <Pagination 
+        count={totalPages}
+         page={currentPage}
+         onChange={(event, page) => setCurrentPage(page)}
+         color="primary"
+         />
         </Container>
     </div>
     </>

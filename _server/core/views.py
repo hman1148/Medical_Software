@@ -1,7 +1,9 @@
-from django.shortcuts import render
-from django.conf  import settings
 import json
 import os
+from django.db.models import Q
+from django.shortcuts import render
+from django.conf  import settings
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.forms import model_to_dict
@@ -111,10 +113,22 @@ def get_patient(req: HttpRequest, id):
     
 @login_required
 def all_patients(req: HttpRequest):
-    all_patients = Patient.objects.all()
-    patient_view_data = [model_to_dict(patient, fields=['id', 'name', 'address', 'email']) for patient in all_patients]
+    search_query = req.GET.get('search', '')
+    page_number = req.GET.get('page', 1)
+    
+    querry_set = Patient.objects.all()
+    
+    if search_query:
+        querry_set = querry_set.filter(name__icontains=search_query) # name_icontains looks for the 'name' it can be 'email_icontains' for example
+    
+    paginator = Paginator(querry_set, 10)
+    page_obj = paginator.get_page(page_number)
+
+
+    patient_view_data = [model_to_dict(patient, fields=['id', 'name', 'address', 'email']) for patient in page_obj]
         
-    return JsonResponse({'patients': patient_view_data})
+    return JsonResponse({'patients': patient_view_data, 'page': page_obj.number, 'total_pages': paginator.num_pages})
+
 
 @login_required
 def get_current_user(req: HttpRequest):
