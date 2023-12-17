@@ -136,6 +136,7 @@
 .material-ui-search-bar {
   display: flex;
   align-items: center;
+  width: 75%;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px;

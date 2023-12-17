@@ -1,4 +1,4 @@
-const {app, BrowserWindow, screen} = require("electron");
+const {app, BrowserWindow, screen, webFrame} = require("electron");
 const {exec} = require("child_process");
 const os = require("os");
 const path = require("path");
@@ -11,15 +11,15 @@ let createWindow = () => {
     const {width, height} = screen.getPrimaryDisplay().workAreaSize;
 
     mainWindow = new BrowserWindow({
-        width: Math.round(width * 0.5),
-        height: Math.round(height * 0.5),
+        width: Math.round(width * 0.5 + 150),
+        height: Math.round(height * 0.5 + 105),
         widthPreferences: {
             nodeIntegration: true
         }
     });
 
     mainWindow.loadURL("http://localhost:8000");
-    mainWindow.webContents.setZoomFactor(1.2);
+    webFrame.setZoomFactor(1.5);
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
