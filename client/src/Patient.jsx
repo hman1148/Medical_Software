@@ -51,7 +51,7 @@ let Patient = () => {
         <Card sx={{ maxWidth: 600, margin: '20px auto' }}>
             <CardContent>
                 <Typography variant="h5" component="div">
-                    Patient Details
+                    {patient.name}'s Information
                 </Typography>
                 <Grid container spacing={2} sx={{ marginTop: 2 }}>
                     <Grid item xs={6}>

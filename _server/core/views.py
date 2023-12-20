@@ -1,6 +1,5 @@
 import json
 import os
-from django.db.models import Q
 from django.shortcuts import render
 from django.conf  import settings
 from django.core.paginator import Paginator
@@ -9,6 +8,10 @@ from django.http import JsonResponse
 from django.forms import model_to_dict
 from django.http import HttpRequest
 from .models import Log, Patient
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+from reportlab.lib import colors
 
 
 # Load manifest when server launches
@@ -30,14 +33,6 @@ def index(req):
         }
         
         return render(req, "core/index.html", context)
-#--------------------
-# Logs Page
-#--------------------
-@login_required
-def logs(req: HttpRequest):
-    logs = Log.objects.all()
-    
-    return JsonResponse({'logs': model_to_dict(logs)})
 
 @login_required
 def add_patient(req: HttpRequest):
@@ -57,11 +52,14 @@ def add_patient(req: HttpRequest):
             cost_of_reimbursement = body["cost_of_reimbursement"]
         )
         
-        
     except Exception as e:
         return JsonResponse({'message': f"Didn't enter in the correct data {e}"})
     
     patient.save()
+    log_entry = Log(user=req.user, action_type="Created Patient", patient=patient)
+
+    log_entry.save()
+
     return JsonResponse({"message": "success"})
 
 #----------------
@@ -86,6 +84,10 @@ def edit_patient(req: HttpRequest, id):
         patient.cost_of_reimbursement = body["cost_of_reimbursement"]
         
         patient.save()
+        
+        log_entry = Log(user=req.user, action_type="Edited Patient", patient=patient)
+        log_entry.save()
+        
         return JsonResponse({"message": "success"})
 
     except Exception as e:
@@ -96,8 +98,13 @@ def edit_patient(req: HttpRequest, id):
 @login_required
 def delete_patient(req: HttpRequest, id):
     try:
-        deleted_user = Patient.objects.get(id=id)
-        deleted_user.delete()
+        deleted_patient = Patient.objects.get(id=id)
+        
+        log_entry = Log(user=req.user, action_type="Deleted Patient", patient=deleted_patient)
+        log_entry.save()
+        
+        deleted_patient.delete()
+        
         return JsonResponse({"message": "success"})
     except Exception as e:
         return JsonResponse({"message": f"Couldn't find Patient {e}"})
@@ -139,3 +146,41 @@ def get_current_user(req: HttpRequest):
         return JsonResponse({"user": user_view_info})
     else:
         return JsonResponse({"user": "none"})
+    
+#--------------------
+# Logs Page
+#--------------------
+@login_required
+def all_logs(req: HttpRequest):
+    search_query = req.GET.get('search', '')
+    page_number = req.GET.get('page', 1)
+    
+    querry_set = Log.objects.all()
+    
+    if querry_set:
+        # search by users
+        querry_set = querry_set.filter(user__first_name__icontains=search_query)
+    
+    paginator = Paginator(querry_set, 10)
+    page_obj = paginator.get_page(page_number)
+        
+    # get specific attributes from the logs since the 
+    # ids from the user and patient are only saved
+    log_view_data = [
+        {
+            'id': log.id,
+            'user': f"{log.user.first_name} {log.user.last_name}",  
+            'action_type': log.action_type,
+            'patient': log.patient.name,  
+            'date': log.date
+        }
+        for log in page_obj
+    ]
+        
+    return JsonResponse({'logs': log_view_data, 'page': page_obj.number, 'total_pages': paginator.num_pages})
+
+
+@login_required
+def print_log(req: HttpRequest):
+    
+    pass

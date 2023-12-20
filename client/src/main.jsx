@@ -7,6 +7,7 @@ import Central from "./Central.jsx";
 import CreatePatientPage from './CreatePatientPage.jsx';
 import Patient from './Patient.jsx';
 import EditPatient from './EditPatient.jsx';
+import Logs from './Logs.jsx';
 
 const router =  createHashRouter([
      {
@@ -24,6 +25,10 @@ const router =  createHashRouter([
      {
       path: "/patient/:id",
       element: <Patient />
+     },
+     {
+      path: '/central/logs',
+      element: <Logs />
      }
 ]);
 

@@ -93,7 +93,8 @@ let Central = () => {
             <Button 
             className="button"
              style={{backgroundColor: "whitesmoke", border: "0.5px solid grey", boxShadow: ""}}>
-                Logs</Button>
+                <Link to="/central/logs">View Logs</Link>
+            </Button>
         </div>
 
         <TableContainer component={Paper} className="tableContainer">
@@ -124,7 +125,7 @@ let Central = () => {
                         </TableRow>
                     ))): (
                     <TableRow>
-                        <TableCell colSpan={4}>No patients available</TableCell>
+                        <TableCell colSpan={4}>No Patients Available</TableCell>
                     </TableRow>
                     )
                     }

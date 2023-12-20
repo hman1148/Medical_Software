@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 class Patient(models.Model):
@@ -20,5 +21,5 @@ class Log(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     action_type = models.CharField(max_length=255)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(default=timezone.now)
     
