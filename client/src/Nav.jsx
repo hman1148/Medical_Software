@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import {toast, ToastContainer} from "react-toastify"
 import cookie from "cookie";
+import "react-toastify/dist/ReactToastify.css";
+
 
 
 let Nav = () => {
@@ -58,7 +60,7 @@ let Nav = () => {
                 toast.success("Successfully logged out!");
                 setTimeout(() => window.location.href = "/" , 2000);
             } else {
-                toast.success("Couldn't logout")
+                toast.error("Couldn't logout");
             }
 
         } catch (error) {

@@ -6,12 +6,9 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.forms import model_to_dict
-from django.http import HttpRequest
+from django.http import HttpRequest, FileResponse
 from .models import Log, Patient
-from reportlab.pdfgen import canvas
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfbase import pdfmetrics
-from reportlab.lib import colors
+from .reportgen import create_report
 
 
 # Load manifest when server launches
@@ -49,7 +46,7 @@ def add_patient(req: HttpRequest):
             secondary_insurance = body["secondary_insurance"],
             date_of_fitting = body["date_of_fitting"],
             warranty_expiration = body["warranty_expiration"],
-            cost_of_reimbursement = body["cost_of_reimbursement"]
+            cost_of_hearing_aid = body["cost_of_hearing_aid"]
         )
         
     except Exception as e:
@@ -81,7 +78,7 @@ def edit_patient(req: HttpRequest, id):
         patient.secondary_insurance = body["secondary_insurance"]
         patient.date_of_fitting = body["date_of_fitting"]
         patient.warrenty_expiration = body["warranty_expiration"]
-        patient.cost_of_reimbursement = body["cost_of_reimbursement"]
+        patient.cost_of_hearing_aid = body["cost_of_hearing_aid"]
         
         patient.save()
         
@@ -180,7 +177,19 @@ def all_logs(req: HttpRequest):
     return JsonResponse({'logs': log_view_data, 'page': page_obj.number, 'total_pages': paginator.num_pages})
 
 
+#-----------------------
+# Print Patient's report
+#-----------------------
 @login_required
-def print_log(req: HttpRequest):
+def print_report(req: HttpRequest, id):
+    try:
+        patient = Patient.objects.get(id=id)
+        pdf_path = create_report(patient)
+        
+        return FileResponse(open(pdf_path, 'rb'), as_attachment=True, filename=f"{patient.name}'s_report.pdf")
+        
+    except Exception as error:
+        return JsonResponse({"message": f"{error}"})
+        
     
-    pass
+    

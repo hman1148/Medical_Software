@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField, InputAdornment } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import cookie from "cookie";
 
@@ -19,7 +19,7 @@ let EditPatient = () => {
     const [secondaryInsurance, setSecondaryInsurance] = useState('');
     const [dateOfFitting, setDateOfFitting] = useState('');
     const [warrantyExpiration, setWarrantyExpiration] = useState('');
-    const [costOfReimbursement, setCostOfReimbursement] = useState('');
+    const [costOfHearingAid, setCostOfHearingAid] = useState('');
 
     const params = useParams();
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ let EditPatient = () => {
                 setSecondaryInsurance(patient.secondary_insurance);
                 setDateOfFitting(patient.date_of_fitting);
                 setWarrantyExpiration(patient.warranty_expiration);
-                setCostOfReimbursement(patient.cost_of_reimbursement);
+                setCostOfHearingAid(patient.cost_of_hearing_aid);
                 setCurrentPatient(patient);
             } else {
                 throw new Error("Patient not found");
@@ -68,7 +68,7 @@ let EditPatient = () => {
             secondary_insurance: secondaryInsurance,
             date_of_fitting: dateOfFitting,
             warranty_expiration: warrantyExpiration,
-            cost_of_reimbursement: costOfReimbursement
+            cost_of_hearing_aid: costOfHearingAid
         };
         try {
         const response = await fetch(`/edit_patient/${params.id}`, {
@@ -231,8 +231,11 @@ let EditPatient = () => {
                     name="cost_of_reimbursement"
                     type="number"
                     variant="outlined"
-                    value={costOfReimbursement}
-                    onChange={(e) => setCostOfReimbursement(e.target.value)}
+                    value={costOfHearingAid}
+                    onChange={(e) => setCostOfHearingAid(e.target.value)}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    }}
                 />
             </Stack>
 

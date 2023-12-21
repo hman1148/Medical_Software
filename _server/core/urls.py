@@ -13,5 +13,5 @@ urlpatterns = [
     path('user', view=views.get_current_user, name="user"),
     path('logout', view=coreviews.logout_view, name="logout"),
     path('all_logs', view=views.all_logs, name='all_logs'),
-    path('print_log/int:id>', view=views.print_log, name='print_log')
+    path('print_log/<int:id>', view=views.print_report, name='print_log')
 ]

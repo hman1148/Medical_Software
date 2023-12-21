@@ -14,7 +14,7 @@ class Patient(models.Model):
     secondary_insurance = models.TextField()
     date_of_fitting = models.DateTimeField()
     warranty_expiration = models.DateTimeField()
-    cost_of_reimbursement = models.IntegerField()
+    cost_of_hearing_aid = models.IntegerField()
     
 class Log(models.Model):
     

@@ -1,4 +1,4 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField, InputAdornment } from "@mui/material";
 import React, { useState, createPortal, useEffect } from "react"
 import {toast, ToastContainer} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
@@ -16,7 +16,7 @@ let CreatePatientPage = () => {
     const [secondaryInsurance, setSecondaryInsurance] = useState('');
     const [dateOfFitting, setDateOfFitting] = useState('');
     const [warrantyExpiration, setWarrantyExpiration] = useState('');
-    const [costOfReimbursement, setCostOfReimbursement] = useState('');
+    const [costOfHearingAid, setCostOfHearingAid] = useState('');
     
 
     const handleSubmit = async (e) => {
@@ -31,7 +31,7 @@ let CreatePatientPage = () => {
             secondary_insurance: secondaryInsurance,
             date_of_fitting: dateOfFitting,
             warranty_expiration: warrantyExpiration,
-            cost_of_reimbursement: costOfReimbursement
+            cost_of_hearing_aid: costOfHearingAid
         }
         
         try {
@@ -191,8 +191,11 @@ let CreatePatientPage = () => {
                         name="cost_of_reimbursement"
                         type="number"
                         variant="outlined"
-                        value={costOfReimbursement}
-                        onChange={(e) => setCostOfReimbursement(e.target.value)}
+                        value={costOfHearingAid}
+                        onChange={(e) => setCostOfHearingAid(e.target.value)}
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        }}
                     />
                 </Stack>
 

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router"
 import {Card, CardContent, Typography, Grid, Button} from "@mui/material";
+import {toast, ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 let Patient = () => {
@@ -37,6 +39,33 @@ let Patient = () => {
         return date.toLocaleDateString('en-US', options);
     }
 
+    const printReport = async () => {
+        try {
+            const response = await fetch(`/print_log/${patient.id}`, {
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was bad");
+            }
+
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = `${patient.name}_report.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(downloadUrl);
+            a.remove();
+            
+            toast.success(`Successfully downloaded ${patient.name}'s report`);
+        } catch (error) {
+            toast.error(`Couldn't download ${patient.name}'s report`)
+            console.log(error);
+        }
+    }
+
 
     useEffect(() => {
         getPatient();
@@ -47,6 +76,8 @@ let Patient = () => {
     }
 
     return (
+        <>
+        <ToastContainer position="top-right" autoClose={2000} style={""} />
         <div className="form-background">
         <Card sx={{ maxWidth: 600, margin: '20px auto' }}>
             <CardContent>
@@ -128,17 +159,40 @@ let Patient = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1" color="text.secondary">
-                            Cost of Reimbursement
+                            Cost of Hearing Aid
                         </Typography>
                         <Typography variant="body2">
-                            {patient.cost_of_reimbursement}
+                            ${patient.cost_of_hearing_aid}
                         </Typography>
                     </Grid>
                 </Grid>
             </CardContent>
-            <Button style={{background: "#54B4D3", width: '60px', height: '40px', color: 'white', margin: "15px"}} onClick={() => navigate(-1)}>Back</Button>
+            <div className="button-container">
+                <Button style={{
+                        background: "#54B4D3",
+                        minWidth: '150px', 
+                        padding: '10px 20px', 
+                        height: '60px',
+                        color: 'white',
+                        marginLeft: "15px",
+                        marginRight: "150px"}}
+                         onClick={() => navigate(-1)}
+                         >Back
+                </Button>
+                <Button style={{
+                        background: "#54B4D3",
+                        minWidth: '150px', 
+                        padding: '10px 20px', 
+                        height: '60px',
+                        color: 'white',
+                        marginRight: "15px"}} 
+                        onClick={printReport}
+                        >Download {patient.name}'s Report
+                </Button>
+            </div>
         </Card>
         </div>
+        </>
     )
 }
 
