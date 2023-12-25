@@ -187,6 +187,9 @@ def print_report(req: HttpRequest, id):
         patient = Patient.objects.get(id=id)
         pdf_path = create_report(patient)
         
+        log_entry = Log(user=req.user, action_type=f"Downloaded {patient.name}'s report", patient=patient)
+        
+        log_entry.save()
         return FileResponse(open(pdf_path, 'rb'), as_attachment=True, filename=f"{patient.name}'s_report.pdf")
         
     except Exception as error:
