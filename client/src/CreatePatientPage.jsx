@@ -187,8 +187,8 @@ let CreatePatientPage = () => {
                 <Stack spacing={2} direction="row">
                     <TextField
                         className="textfield-size"
-                        label="Cost of Reimbursement"
-                        name="cost_of_reimbursement"
+                        label="Cost of Hearing Aid"
+                        name="cost_of_hearing_aid"
                         type="number"
                         variant="outlined"
                         value={costOfHearingAid}

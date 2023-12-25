@@ -115,6 +115,7 @@ def get_patient(req: HttpRequest, id):
     except Exception as e:
         return JsonResponse({"message": f"Couldn't find patient {e}"})
     
+    
 @login_required
 def all_patients(req: HttpRequest):
     search_query = req.GET.get('search', '')

@@ -19,7 +19,7 @@ let createWindow = () => {
     });
 
     mainWindow.loadURL("http://localhost:8000");
-    webFrame.setZoomFactor(1.5);
+    // webFrame.setZoomFactor(1.5);
     mainWindow.on('closed', () => {
         mainWindow = null;
     });

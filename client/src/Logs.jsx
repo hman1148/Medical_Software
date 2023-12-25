@@ -6,9 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {toast, ToastContainer} from "react-toastify";
 import Nav from "./Nav";
 
-
-
-let Logs = () => {
+const Logs = () => {
 
     const [logs, setLogs] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
