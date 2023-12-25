@@ -6,18 +6,21 @@ This application is a hybrid MPA and SPA. It reuses all of the login stuff that 
 
 ## Creating a new application
 1. Clone the repo `git clone git@github.com:dittonjs/2610DjangoViteStarter.git <your-new-project-name>`. Replace `<your-new-project-name>` with the name you want give to your project.
-2. Open the pyproject.toml file and change the `name` property. You should use `-` to separate words in your name for this property.
+2. Open the pyproject.toml file and change the `name` property. It would help if you used `-` to separate words in your name for this property.
 
 ## Initial Setup
-1. Change the name property in the `pyproject.toml` file to be something unique to your project.
-1. In the root directory, install the python dependencies `poetry install`
+1. Change the name property in the `pyproject.toml` file to something unique to your project.
+1. In the root directory, install the Python dependencies `poetry install`
 2. In the `client` directory, install the javascript dependencies `npm install`
 3. In the `_server` directory, create a new file called `.env`
 4. Copy the contents of `_server/.env.example` into the newly created `.env` file.
 5. Activate the poetry env `poetry shell`
 6. In the `_server` directory, run the migrations `python manage.py migrate`
 
-## Running the appliction
+## Running the application
 1. In the `client` directory run `npm run dev`
 2. In the `_server` directory (with your poetry env activated) run `python manage.py runserver`
 3. Visit your application at `http://localhost:8000`
+
+## Make sure to add a .env file to root of the _server folder. 
+Then point the ASSET_URL to localhost:5173. This will prevent any possible headaches from favicon.io throwing possible errors in django.
