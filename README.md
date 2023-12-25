@@ -22,4 +22,5 @@ This application is a hybrid MPA and SPA. It reuses all of the login stuff that 
 2. In the `_server` directory (with your poetry env activated) run `python manage.py runserver`
 3. Visit your application at `http://localhost:8000`
 
-## Make sure to add a .env file to root of the _server folder. Then point the ASSET_URL to localhost:5173. This will prevent any possible headaches from favicon.io throwing possible errors in django.
+## Make sure to add a .env file to root of the _server folder. 
+Then point the ASSET_URL to localhost:5173. This will prevent any possible headaches from favicon.io throwing possible errors in django.
