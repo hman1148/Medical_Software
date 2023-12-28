@@ -79,22 +79,12 @@ let Central = () => {
         <Container maxWidth="md">
 
         <div className="button-container">
-            <Button 
-            className="button"
-             style={{backgroundColor: "whitesmoke", border: "0.5px solid grey", boxShadow: ""}}>
-                <Link to="/central/create_patient_page">Add Patient</Link>
-                </Button>
             <input 
-            className="material-ui-search-bar 
-            " type="text"
+            className="material-ui-search-bar"
+             type="text"
              value={searchQuerry} onChange={(e) => setSearchQuery(e.target.value)} 
              placeholder="Search patients..." 
              />
-            <Button 
-            className="button"
-             style={{backgroundColor: "whitesmoke", border: "0.5px solid grey", boxShadow: ""}}>
-                <Link to="/central/logs">View Logs</Link>
-            </Button>
         </div>
 
         <TableContainer component={Paper} className="tableContainer">

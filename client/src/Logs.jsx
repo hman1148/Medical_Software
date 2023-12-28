@@ -56,20 +56,12 @@ return (
         <Container maxWidth="md">
 
         <div className="button-container">
-            <Button 
-            className="button"
-            onClick={() => navigate(-1)}
-             style={{backgroundColor: "whitesmoke", border: "0.5px solid grey", boxShadow: ""}}>
-                Back to Home
-            </Button>
             <input 
             className="material-ui-search-bar 
             " type="text"
              value={searchQuerry} onChange={(e) => setSearchQuery(e.target.value)} 
              placeholder="Search Logs..." 
              />
-             <Button>Print Report Of All Patients</Button>
-
         </div>
 
         <TableContainer component={Paper} className="tableContainer">

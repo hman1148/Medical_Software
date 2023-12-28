@@ -9,6 +9,7 @@ from django.forms import model_to_dict
 from django.http import HttpRequest, FileResponse
 from .models import Log, Patient
 from .reportgen import create_report
+from .excel_importer import process_excel_file
 
 
 # Load manifest when server launches
@@ -196,4 +197,36 @@ def print_report(req: HttpRequest, id):
         return JsonResponse({"message": f"{error}"})
         
     
+#---------------------
+# Read in Excel File
+#---------------------
+def import_patient(req: HttpRequest):
+    
+    # try and verify we have an excel file, then read in patient data
+    try:
+        excel_file = req.FILES.get('excel_file')
+        
+        if excel_file:            
+            patient_data = process_excel_file(excel_file)
+
+            # loop through patient data found in the form
+            for patient in patient_data:
+                newPatient = Patient(
+                    name = patient["name"],
+                    address = patient["address"],
+                    email = patient["email"],
+                    birthday = patient["birthday"],
+                    phone_number = patient["phone_number"],
+                    primary_insurance = patient["primary_insurance"],
+                    secondary_insurance = patient["secondary_insurance"],
+                    date_of_fitting = patient["date_of_fitting"],
+                    warranty_expiration = patient["warranty_expiration"],
+                    cost_of_hearing_aid = patient["cost_of_hearing_aid"]
+                )
+                newPatient.save()
+        return JsonResponse({"message": "success"})
+    
+    except Exception as e:
+        return JsonResponse({"error": f"Failed to import file {e}"})
+        
     

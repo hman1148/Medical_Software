@@ -1,14 +1,54 @@
-import {Box, Toolbar, AppBar, Button, Typography} from "@mui/material"
+import {
+    Box, 
+    Toolbar, 
+    AppBar, 
+    Button, 
+    Typography, 
+    IconButton, 
+    Drawer, 
+    Divider, 
+    List, 
+    ListItem, 
+    ListItemButton,
+    ListItemIcon, 
+    ListItemText,
+ } 
+    from "@mui/material"
+import MenuIcon from '@mui/icons-material/Menu';
+import { styled, useTheme } from '@mui/material/styles';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import HomeIcon from '@mui/icons-material/Home';
+import ArticleIcon from '@mui/icons-material/Article';
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import {Link as RouterLink} from "react-router-dom";
 import {toast, ToastContainer} from "react-toastify"
 import cookie from "cookie";
 import "react-toastify/dist/ReactToastify.css";
 
-
+const drawerWidth = 240;
 
 let Nav = () => {
     const [user, setUser] = useState(null);
+    const [open, setOpen] = useState(false);
+    const theme = useTheme();
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    }
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    }
+
+    const DrawerHeader = styled('div')(({ theme }) => ({
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+      }));
 
     useEffect(() => {
         const getUser = async () => {
@@ -35,8 +75,6 @@ let Nav = () => {
         getUser();
 }, []);
 
-
-    const navigate = useNavigate();
 
     const logout = async () => {
         try {
@@ -72,14 +110,78 @@ let Nav = () => {
     <>
     <ToastContainer position="top-right" autoClose={2000} style={""}/>
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{borderRadius: '15px'}}>
-        <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {user ? user.first_name : ""}
-          </Typography>
-          <Button color="inherit" onClick={logout}>Logout</Button>
-        </Toolbar>
-      </AppBar>
+        <AppBar position="static" style={{ borderRadius: '15px' }}>
+            <Toolbar>
+            <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerOpen}
+            sx={{ ...(open && { display: 'none' }) }}
+          >
+            <MenuIcon />
+          </IconButton>
+            <div style={{ flexGrow: 1 }}></div>
+            <Typography variant="h6" component="div" style={{marginRight: '20px'}}>
+                {user ? user.first_name : ""}
+            </Typography>
+            <Button color="inherit" onClick={logout}>Logout</Button>
+            </Toolbar>
+        </AppBar>
+        <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>  
+            <ListItem key={"Home"} disablePadding>
+              <ListItemButton component={RouterLink} to="/">
+                <ListItemIcon>
+                    <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Home"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={"Add Patient"} disablePadding>
+              <ListItemButton component={RouterLink} to="/central/create_patient_page">
+                <ListItemIcon>
+                    <AddCircleIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Add Patient"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={"Logs Page"} disablePadding>
+              <ListItemButton component={RouterLink} to="/central/logs">
+                <ListItemIcon>
+                    <ArticleIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Logs Page"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={"Import Patients"} disablePadding>
+              <ListItemButton component={RouterLink} to="/central/logs">
+                <ListItemIcon>
+                    <ArticleIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Import Patients"} />
+              </ListItemButton>
+            </ListItem>
+        </List>
+        <Divider />
+    </Drawer>
     </Box>
     </>
     )
