@@ -31,6 +31,8 @@ const drawerWidth = 240;
 let Nav = () => {
     const [user, setUser] = useState(null);
     const [open, setOpen] = useState(false);
+
+    const fileInputReference = useRef(null);
     const theme = useTheme();
 
     const handleDrawerOpen = () => {
@@ -106,6 +108,45 @@ let Nav = () => {
         }
     }
 
+    const importPatients = async (event) => {
+
+        const file = event.target.files[0];
+        
+       if (file) {
+          let allowedTypes = [
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // for .xlsx files
+            'application/vnd.ms-excel' 
+        ];
+
+        if (allowedTypes.includes(file.type)) {
+          const formData = new FormData();
+          formData.append('excel_file', file);
+
+        try {
+          const response = await fetch(`/import_patient`, {
+            method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRFToken": cookie.parse(document.cookie).csrftoken
+                },
+                body: JSON.stringify(formData),
+                credentials: 'include'
+          });
+          const data = await response.json();
+
+          if (data.message == "success") {
+              toast.success("Successfully imported CSV file!");
+          } else {
+            toast.error("Couldn't import CSV file, please validate the data first.")
+          } 
+        } catch (error) {
+          toast.error(`Server responsed with the following error: ${error.message}`);
+        }
+    }
+  }
+
+
     return (
     <>
     <ToastContainer position="top-right" autoClose={2000} style={""}/>
@@ -172,19 +213,20 @@ let Nav = () => {
               </ListItemButton>
             </ListItem>
             <ListItem key={"Import Patients"} disablePadding>
-              <ListItemButton component={RouterLink} to="/central/logs">
+              <ListItemButton onClick={importPatients}>
                 <ListItemIcon>
                     <ArticleIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Import Patients"} />
               </ListItemButton>
             </ListItem>
+           
         </List>
         <Divider />
     </Drawer>
     </Box>
     </>
     )
-
+      }
 }
 export default Nav; 

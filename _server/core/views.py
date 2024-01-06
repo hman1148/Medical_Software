@@ -211,6 +211,9 @@ def import_patient(req: HttpRequest):
 
             # loop through patient data found in the form
             for patient in patient_data:
+                if Patient.objects.exists(email=patient["email"]):
+                    continue
+                
                 newPatient = Patient(
                     name = patient["name"],
                     address = patient["address"],
